@@ -5,6 +5,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.Dispatchers
+import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -52,4 +54,8 @@ object AppModule {
     fun provideCartoonApiService(retrofit: Retrofit) : CartoonApiService {
         return retrofit.create(CartoonApiService::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideDispatcherIO() = Dispatchers.IO
 }

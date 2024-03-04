@@ -69,4 +69,8 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
 
     implementation ("de.hdodenhof:circleimageview:3.1.0")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
 }

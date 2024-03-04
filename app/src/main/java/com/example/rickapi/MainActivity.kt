@@ -3,9 +3,13 @@ package com.example.rickapi
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.viewModels
+import androidx.navigation.fragment.NavHostFragment
 import com.example.rickapi.adapter.CartoonAdapter
 import com.example.rickapi.data.CartoonApiService
 import com.example.rickapi.databinding.ActivityMainBinding
+import com.example.rickapi.viewmodel.CartoonsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,30 +18,10 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
-    lateinit var binding: ActivityMainBinding
-    lateinit var adapter: CartoonAdapter
-
-    @Inject
-    lateinit var cartoonApiService: CartoonApiService
-
-    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_main)
 
-        adapter = CartoonAdapter()
-        binding.rvRecyclerview.adapter = adapter
-
-        CoroutineScope(Dispatchers.IO).launch {
-
-            val hero = cartoonApiService.getAllCartoons()
-            runOnUiThread{
-
-                val cartoons = hero.results
-                adapter.addCartoon(cartoons)
-            }
-            }
-        }
+        supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
     }
+}

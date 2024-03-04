@@ -4,43 +4,37 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickapi.databinding.ItemCartoonBinding
+import com.example.rickapi.model.Character
 import com.squareup.picasso.Picasso
 import com.example.rickapi.model.Result
 
-class CartoonAdapter : RecyclerView.Adapter<CartoonAdapter.CartoonViewHolder>() {
-
-    private var cartoons = arrayListOf<Result>()
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun addCartoon(character: List<Result>){
-        cartoons.clear()
-        cartoons.addAll(character)
-        notifyDataSetChanged()
-    }
+class CartoonAdapter : ListAdapter<Result, CartoonViewHolder>(
+    CharacterItemCallBack()
+) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): CartoonAdapter.CartoonViewHolder {
+    ): CartoonViewHolder {
         return CartoonViewHolder(
             ItemCartoonBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        ))
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
-    override fun onBindViewHolder(holder: CartoonAdapter.CartoonViewHolder, position: Int) {
-        holder.bind(cartoons[position])
+    override fun onBindViewHolder(holder: CartoonViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int {
-        return cartoons.size
-    }
-
-    inner class CartoonViewHolder(private val binding: ItemCartoonBinding) : RecyclerView.ViewHolder(binding.root){
+}
+class CartoonViewHolder(private val binding: ItemCartoonBinding) : RecyclerView.ViewHolder(binding.root){
 
         fun bind(context: Result){
 
@@ -48,7 +42,7 @@ class CartoonAdapter : RecyclerView.Adapter<CartoonAdapter.CartoonViewHolder>() 
             binding.ciDeadStatus.visibility = View.GONE
             binding.ciUnknownStatus.visibility = View.GONE
 
-            when (context.status) {
+            when (context.status){
                 "Alive" -> binding.ciAliveStatus.visibility = View.VISIBLE
                 "Dead" -> binding.ciDeadStatus.visibility = View.VISIBLE
                 "unknown" -> binding.ciUnknownStatus.visibility = View.VISIBLE
@@ -61,5 +55,15 @@ class CartoonAdapter : RecyclerView.Adapter<CartoonAdapter.CartoonViewHolder>() 
             binding.tvLocationSecond.text = context.origin.name
             Picasso.get().load(context.image).into(binding.ivImage)
         }
+}
+
+class CharacterItemCallBack : DiffUtil.ItemCallback<Result>(){
+    override fun areItemsTheSame(oldItem: Result, newItem: Result): Boolean {
+        return oldItem.id == newItem.id
     }
+
+    override fun areContentsTheSame(oldItem: Result, newItem: Result): Boolean {
+        return oldItem == newItem
+    }
+
 }
