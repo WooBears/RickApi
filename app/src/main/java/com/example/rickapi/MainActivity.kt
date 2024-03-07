@@ -10,13 +10,13 @@ import com.example.rickapi.adapter.CartoonAdapter
 import com.example.rickapi.data.CartoonApiService
 import com.example.rickapi.databinding.ActivityMainBinding
 import com.example.rickapi.viewmodel.CartoonsViewModel
-import dagger.hilt.android.AndroidEntryPoint
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@AndroidEntryPoint
+
+
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,6 +1,7 @@
 package com.example.rickapi.data
 
 import com.example.rickapi.model.Character
+import com.example.rickapi.model.Episode
 import com.example.rickapi.model.Result
 import retrofit2.Call
 import retrofit2.Response
@@ -12,5 +13,8 @@ interface CartoonApiService {
     fun getAllCartoons() : Response<Character>
 
     @GET("character/{id}")
-    suspend fun getAllCharacters(@Path("id") id: Int) : Response<Result>
+    fun getAllCharacters(@Path("id") id: Int) : Response<Result>
+
+    @GET("episode/{id}")
+    fun getEpisode(@Path("id") id: Int) : Episode
 }

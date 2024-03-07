@@ -12,10 +12,11 @@ import com.example.rickapi.model.Character
 import com.squareup.picasso.Picasso
 import com.example.rickapi.model.Result
 
-class CartoonAdapter : ListAdapter<Result, CartoonViewHolder>(
+class CartoonAdapter (
+    private val onClick: (Result) -> Unit
+): ListAdapter<Result, CartoonViewHolder>(
     CharacterItemCallBack()
 ) {
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -25,18 +26,21 @@ class CartoonAdapter : ListAdapter<Result, CartoonViewHolder>(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ),
+            onClick
         )
-    }
 
+    }
     override fun onBindViewHolder(holder: CartoonViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
 }
-class CartoonViewHolder(private val binding: ItemCartoonBinding) : RecyclerView.ViewHolder(binding.root){
-
-        fun bind(context: Result){
+class CartoonViewHolder(
+    private val binding: ItemCartoonBinding,
+    private val onClick: (Result) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root){
+    fun bind(context: Result){
 
             binding.ciAliveStatus.visibility = View.GONE
             binding.ciDeadStatus.visibility = View.GONE
@@ -54,7 +58,11 @@ class CartoonViewHolder(private val binding: ItemCartoonBinding) : RecyclerView.
             binding.tvLocation.text = context.location.name
             binding.tvLocationSecond.text = context.origin.name
             Picasso.get().load(context.image).into(binding.ivImage)
+
+        binding.root.setOnClickListener {
+            onClick(context)
         }
+    }
 }
 
 class CharacterItemCallBack : DiffUtil.ItemCallback<Result>(){
@@ -65,5 +73,4 @@ class CharacterItemCallBack : DiffUtil.ItemCallback<Result>(){
     override fun areContentsTheSame(oldItem: Result, newItem: Result): Boolean {
         return oldItem == newItem
     }
-
 }
